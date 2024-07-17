@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<svelte:head>
+    <title>آلة حاسبة</title>
+</svelte:head>
+
+<div
+    class="bg-blue-950 h-[30rem] w-[20rem] rounded-3xl flex justify-center items-center min-h-[50dvh]"
+>
+    <div class="bg-blue-600 h-[5rem] w-[5rem] rounded-3xl"></div>
+</div>
