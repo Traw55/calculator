@@ -5,16 +5,25 @@
    import Division from'$lib/icon/Division.svelte';
    import BackspaceIcon from'$lib/icon/Backspace.svelte';
 
-   function clear(){
-      equation = "";
-   }
-
-   function backspace(){
-      equation = equation.substring(0, equation.length - 1);
-   }
-   
    function addToEquation(value : string){
       equation += value;
+   }
+
+   function backspace() {
+      switch (equation.substring(equation.length - 3, equation.length)){
+         case " + ":
+         case " * ":
+         case " - ":
+         case " / ":
+            equation = equation.substring(0, equation.length - 3);
+            break;
+         default:
+            equation = equation.substring(0, equation.length - 1);
+      }
+   }
+   
+   function clear(){
+      equation = "";
    }
 
    function solve(){
@@ -30,14 +39,14 @@
 
 <div class="bg-blue-200  rounded-3xl grid grid-cols-4 gap-1 p-6 font-semibold text-xl shadow-2xl">
 
-<div class="bg-blue-500 rounded-full col-span-4 h-12 flex items-center px-4 mb-2 text-white">
+<div class="bg-blue-500 rounded-xl col-span-4 min-h-12 flex items-center px-4 mb-2 text-white max-w-[12.75rem] break-all">
     {equation}
 </div>
     <button on:click={clear} class="bg-blue-950 text-white"> AC </button>
     <button on:click={backspace} class="bg-[#f3f6fc]">
       <BackspaceIcon />
     </button>
-    <button on:click={() => addToEquation(" /100")} class="bg-[#f3f6fc]"> % </button>
+    <button on:click={() => addToEquation(" / 100")} class="bg-[#f3f6fc]"> % </button>
     <button on:click={() => addToEquation(" + ")} class="bg-[#63dc74] text-white"> 
       <Plus/> 
     </button>
