@@ -10,8 +10,22 @@
 
    /**
     * Adds a value (number or operator) to the current equation string.
+    * Prevents consecutive operators for better UX and validation.
     */
    function addToEquation(value: string) {
+      const isOperator = [" + ", " * ", " - ", " / "].includes(value);
+      const endsWithOperator = /[\+\-\*\/]\s$/.test(equation);
+
+      // Prevent starting with an operator (except maybe minus for negative numbers, but keeping it simple here)
+      if (isOperator && equation === "") return;
+
+      // Prevent consecutive operators
+      if (isOperator && endsWithOperator) {
+         // Replace the last operator with the new one
+         equation = equation.substring(0, equation.length - 3) + value;
+         return;
+      }
+
       equation += value;
    }
 
@@ -43,6 +57,12 @@
     */
    function solve() {
       try {
+         // Strict validation: check for consecutive operators or trailing operators
+         // Although addToEquation prevents some of this, we check here for robustness.
+         if (/[\+\-\*\/]{2,}/.test(equation.replace(/\s/g, '')) || /[\+\-\*\/]\s*$/.test(equation)) {
+            throw new Error("Syntax Error");
+         }
+
          // Note: eval is used here for simplicity in a client-side calculator.
          // In a production environment with user-supplied strings, a dedicated parser would be safer.
          let answer = eval(equation);
